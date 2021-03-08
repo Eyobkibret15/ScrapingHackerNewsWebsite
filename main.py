@@ -2,12 +2,21 @@ import requests
 from bs4 import BeautifulSoup
 import pprint
 
-res = requests.get("https://news.ycombinator.com/news")
-soup = BeautifulSoup(res.text, "html.parser")
 
-title = soup.select(".storylink")
-vote = soup.select(".subtext")
+def ScrapingAllPages():
+    full_pages_news = []
+    no_pages = [1,2,3]
+    for page in no_pages:
+        res = requests.get("https://news.ycombinator.com/news")
+        if page > 1:
+            res = requests.get("https://news.ycombinator.com/news?p=" + str(page))
+        soup = BeautifulSoup(res.text, "html.parser")
 
+        title = soup.select(".storylink")
+        vote = soup.select(".subtext")
+        news_list = (filtering_hacker_news(title, vote))
+        full_pages_news +=news_list
+    return sorted(full_pages_news, key=lambda k: k['Vote'], reverse=True)
 
 
 def filtering_hacker_news(title, vote):
@@ -20,8 +29,7 @@ def filtering_hacker_news(title, vote):
             if current_vote > 99:
                 current_news = {'Title': item.getText(), 'Link': url, 'Vote': current_vote}
                 news_list.append(current_news)
-    return sorted(news_list, key=lambda k: k['Vote'], reverse=True)
+    return news_list
 
 
-
-pprint.pprint((filtering_hacker_news(title, vote)))
+pprint.pprint(ScrapingAllPages())
