@@ -5,7 +5,7 @@ import pprint
 
 def ScrapingAllPages():
     full_pages_news = []
-    no_pages = [1,2,3]
+    no_pages = [1, 2, 3]
     for page in no_pages:
         res = requests.get("https://news.ycombinator.com/news")
         if page > 1:
@@ -15,7 +15,7 @@ def ScrapingAllPages():
         title = soup.select(".storylink")
         vote = soup.select(".subtext")
         news_list = (filtering_hacker_news(title, vote))
-        full_pages_news +=news_list
+        full_pages_news += news_list
     return sorted(full_pages_news, key=lambda k: k['Vote'], reverse=True)
 
 
