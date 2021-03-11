@@ -2,7 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 import pprint
 
-
 def ScrapingAllPages():
     full_pages_news = []
     no_pages = [1, 2, 3]
@@ -17,7 +16,6 @@ def ScrapingAllPages():
         news_list = (filtering_hacker_news(title, vote))
         full_pages_news += news_list
     return sorted(full_pages_news, key=lambda k: k['Vote'], reverse=True)
-
 
 def filtering_hacker_news(title, vote):
     news_list = []
